@@ -23,6 +23,7 @@ namespace Super_Hero_Project.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            //DbSet<Name> SuperHeroName;
         }
 
         public static ApplicationDbContext Create()
