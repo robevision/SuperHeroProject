@@ -10,22 +10,23 @@ namespace Super_Hero_Project.Controllers
     public class SuperHeroesController : Controller
     {
         ApplicationDbContext db;
-
         public SuperHeroesController()
         {
             db = new ApplicationDbContext();
         }
         // GET: SuperHeroes
+        [HttpGet]
         public ActionResult Index()
         {//multiple
-            
-            return View();
+            //IEnumerable<SuperHeroes> superHeroes = new List<SuperHeroes>();
+            return View(db.SuperHeroes.Select(s=>s.Name).ToList());
         }
 
         // GET: SuperHeroes/Details/5
         public ActionResult Details(int id)
         {//singular
-            return View();
+
+            return View(db.SuperHeroes.Where(s => s.ID == id).Select(s => s).ToList());
         }
 
         // GET: SuperHeroes/Create
@@ -65,17 +66,17 @@ namespace Super_Hero_Project.Controllers
 
         // POST: SuperHeroes/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, SuperHeroesController collection)
+        public ActionResult Edit(int id, [Bind(Include = "Name,AlterEgo,PrimaryAbility,AlternativeAbility,CatchPhrase")] SuperHeroes superHeroes)
         {
             try
             {
-                // TODO: Add update logic here
+                db.SuperHeroes.Where(s => s.ID == id).ToList();
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(superHeroes);
             }
         }
 
