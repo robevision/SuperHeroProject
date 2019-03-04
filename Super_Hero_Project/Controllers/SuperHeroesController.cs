@@ -103,18 +103,19 @@ namespace Super_Hero_Project.Controllers
 
         // POST: SuperHeroes/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, SuperHeroesController collection)
+        public ActionResult Delete(int id, SuperHeroes superHero)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
+            //try
+            //{
+                db.SuperHeroes.Remove(superHero);
+                //db.Entry(superHero).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
     }
 }
