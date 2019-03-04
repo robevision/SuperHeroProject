@@ -1,6 +1,7 @@
 ﻿using Super_Hero_Project.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,15 +19,21 @@ namespace Super_Hero_Project.Controllers
         [HttpGet]
         public ActionResult Index()
         {//multiple
-            //IEnumerable<SuperHeroes> superHeroes = new List<SuperHeroes>();
             return View(db.SuperHeroes.ToList());
         }
 
         // GET: SuperHeroes/Details/5
+        [HttpGet]
         public ActionResult Details(int id)
         {//singular
-            //IEnumerable<SuperHeroes> superHeroes = new List<SuperHeroes>();
-            return View(db.SuperHeroes.ToList());
+            try
+            {
+                return View(db.SuperHeroes.Where(s=>s.ID==id).Single());
+            }
+            catch
+            {
+                return View(db.SuperHeroes);
+            }         
         }
 
         // GET: SuperHeroes/Create
@@ -39,7 +46,7 @@ namespace Super_Hero_Project.Controllers
         // POST: SuperHeroes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,AlterEgo,PrimaryAbility,AlternativeAbility,CatchPhrase")] SuperHeroes superHeroes)
+        public ActionResult Create([Bind(Include = "ID,Name,AlterEgo,PrimaryAbility,AlternativeAbility,CatchPhrase")] SuperHeroes superHeroes)
         {
             try
             {
@@ -61,22 +68,30 @@ namespace Super_Hero_Project.Controllers
         // GET: SuperHeroes/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            
+            return View(db.SuperHeroes.Where(s => s.ID == id).Single());
         }
 
         // POST: SuperHeroes/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, [Bind(Include = "Name,AlterEgo,PrimaryAbility,AlternativeAbility,CatchPhrase")] SuperHeroes superHeroes)
+        public ActionResult Edit(int id, [Bind(Include = "ID,Name,AlterEgo,PrimaryAbility,AlternativeAbility,CatchPhrase")] SuperHeroes superHero)
         {
             try
             {
-                db.SuperHeroes.Where(s => s.ID == id).ToList();
+                if (ModelState.IsValid)
+                {
+                    //var updatedSuperHeroes = db.SuperHeroes.Where(s=> s.ID == id).Select(s=>s).Single();
 
-                return RedirectToAction("Index");
+                    //updatedSuperHeroes = superHero;
+                    db.Entry(superHero).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(superHero); 
             }
             catch
             {
-                return View(superHeroes);
+                return View();
             }
         }
 
