@@ -11,6 +11,10 @@ namespace Super_Hero_Project.Controllers
     {
         ApplicationDbContext db;
 
+        public SuperHeroesController()
+        {
+            db = new ApplicationDbContext();
+        }
         // GET: SuperHeroes
         public ActionResult Index()
         {
