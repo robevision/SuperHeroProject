@@ -98,7 +98,7 @@ namespace Super_Hero_Project.Controllers
         // GET: SuperHeroes/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(db.SuperHeroes.Where(s => s.ID == id).Single());
         }
 
         // POST: SuperHeroes/Delete/5
