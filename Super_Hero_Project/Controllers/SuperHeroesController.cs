@@ -96,26 +96,27 @@ namespace Super_Hero_Project.Controllers
         }
 
         // GET: SuperHeroes/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View(db.SuperHeroes.Where(s => s.ID == id).Single());
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    return View(db.SuperHeroes.Where(s => s.ID == id).Single());
+        //}
 
         // POST: SuperHeroes/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, SuperHeroes superHero)
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            //try
-            //{
+            //View(db.SuperHeroes.Where(s => s.ID == id).Single());
+            try
+            {
+                SuperHeroes superHero = db.SuperHeroes.Find(id);
                 db.SuperHeroes.Remove(superHero);
-                //db.Entry(superHero).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
