@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Super_Hero_Project.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,12 @@ namespace Super_Hero_Project.Controllers
 {
     public class SuperHeroesController : Controller
     {
+        ApplicationDbContext db;
+
         // GET: SuperHeroes
         public ActionResult Index()
         {
+            
             return View();
         }
 
@@ -23,18 +27,25 @@ namespace Super_Hero_Project.Controllers
         // GET: SuperHeroes/Create
         public ActionResult Create()
         {
+            ViewBag.ID = new SelectList(db.SuperHeroes, "Id", "Name");
             return View();
         }
 
         // POST: SuperHeroes/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Name,AlterEgo,PrimaryAbility,AlternativeAbility,CatchPhrase")] SuperHeroes superHeroes)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.SuperHeroes.Add(superHeroes);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.PersonId = new SelectList(db.SuperHeroes, "Id", "Name", superHeroes.ID);
+                return View(superHeroes);
             }
             catch
             {
@@ -50,7 +61,7 @@ namespace Super_Hero_Project.Controllers
 
         // POST: SuperHeroes/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, SuperHeroesController collection)
         {
             try
             {
@@ -72,7 +83,7 @@ namespace Super_Hero_Project.Controllers
 
         // POST: SuperHeroes/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, SuperHeroesController collection)
         {
             try
             {
