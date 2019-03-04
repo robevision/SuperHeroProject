@@ -19,14 +19,14 @@ namespace Super_Hero_Project.Controllers
         public ActionResult Index()
         {//multiple
             //IEnumerable<SuperHeroes> superHeroes = new List<SuperHeroes>();
-            return View(db.SuperHeroes.Select(s=>s.Name).ToList());
+            return View(db.SuperHeroes.ToList());
         }
 
         // GET: SuperHeroes/Details/5
         public ActionResult Details(int id)
         {//singular
-
-            return View(db.SuperHeroes.Where(s => s.ID == id).Select(s => s).ToList());
+            //IEnumerable<SuperHeroes> superHeroes = new List<SuperHeroes>();
+            return View(db.SuperHeroes.ToList());
         }
 
         // GET: SuperHeroes/Create
