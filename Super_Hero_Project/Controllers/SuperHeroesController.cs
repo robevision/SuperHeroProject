@@ -17,14 +17,14 @@ namespace Super_Hero_Project.Controllers
         }
         // GET: SuperHeroes
         public ActionResult Index()
-        {
+        {//multiple
             
             return View();
         }
 
         // GET: SuperHeroes/Details/5
         public ActionResult Details(int id)
-        {
+        {//singular
             return View();
         }
 
